@@ -1,0 +1,4 @@
+*.ex linguist-language=Elixir
+*.exs linguist-language=Elixir
+*.eex linguist-language=Elixir
+README.md linguist-documentation
