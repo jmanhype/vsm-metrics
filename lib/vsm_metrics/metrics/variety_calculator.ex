@@ -237,7 +237,7 @@ defmodule VsmMetrics.Metrics.VarietyCalculator do
     channels
     |> Enum.map(fn {source, target, channel_type} ->
       source_variety = varieties[source] || calculate_environment_variety(vsm_state)
-      target_variety = varieties[target] || 0
+      _target_variety = varieties[target] || 0
       capacity = estimate_channel_capacity(channel_type)
       
       flow = min(source_variety, capacity)

@@ -5,8 +5,6 @@ defmodule VsmMetrics.Entropy.ShannonCalculator do
   conditional, and mutual information.
   """
 
-  import :math
-
   @doc """
   Calculate Shannon entropy H(X) = -Σ p(x) * log2(p(x))
   
@@ -140,7 +138,7 @@ defmodule VsmMetrics.Entropy.ShannonCalculator do
     ngrams = create_ngrams(time_series, order + 1)
     
     # Calculate joint and conditional distributions
-    joint_dist = calculate_distribution(ngrams)
+    _joint_dist = calculate_distribution(ngrams)
     
     if order == 0 do
       # For order 0, just return the entropy of individual symbols

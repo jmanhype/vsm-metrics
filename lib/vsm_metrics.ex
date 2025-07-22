@@ -186,11 +186,8 @@ defmodule VsmMetrics do
   Predict future system state.
   
   ## Examples
-      iex> VsmMetrics.predict_state(3600)  # 1 hour ahead
-      %{
-        predicted_state: %{s1: 0.8, s2: 0.7, ...},
-        confidence: 0.67
-      }
+      iex> # VsmMetrics.predict_state(3600)  # 1 hour ahead
+      iex> # Returns: %{predicted_state: map, confidence: float}
   """
   def predict_state(time_horizon, external_inputs \\ []) do
     current_state = get_current_vsm_state()

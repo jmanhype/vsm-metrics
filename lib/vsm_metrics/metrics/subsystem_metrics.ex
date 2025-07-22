@@ -180,9 +180,13 @@ defmodule VsmMetrics.Metrics.SubsystemMetrics do
         :error ->
           Map.update(subsystem_metrics, :errors, 1, &(&1 + 1))
           
-        :algedonic when metadata[:severity] in [:critical, :high] ->
-          signal = %{value: value, severity: metadata.severity, timestamp: metadata.timestamp}
-          Map.update(subsystem_metrics, :algedonic_signals, [signal], &([signal | &1] |> Enum.take(50)))
+        :algedonic ->
+          if metadata[:severity] in [:critical, :high] do
+            signal = %{value: value, severity: metadata[:severity], timestamp: metadata[:timestamp] || System.system_time(:millisecond)}
+            Map.update(subsystem_metrics, :algedonic_signals, [signal], &([signal | &1] |> Enum.take(50)))
+          else
+            subsystem_metrics
+          end
           
         _ ->
           subsystem_metrics
@@ -192,13 +196,15 @@ defmodule VsmMetrics.Metrics.SubsystemMetrics do
 
   defp track_communication(state, source, target, volume) do
     key = {source, target}
+    # Convert volume to a numeric value if it's not already
+    numeric_volume = if is_number(volume), do: volume, else: 1
     
     new_matrix = Map.update(state.communication_matrix, key, 
-      %{count: 1, total_volume: volume, latencies: []}, 
+      %{count: 1, total_volume: numeric_volume, latencies: []}, 
       fn current ->
         %{current | 
           count: current.count + 1,
-          total_volume: current.total_volume + volume
+          total_volume: current.total_volume + numeric_volume
         }
       end)
     

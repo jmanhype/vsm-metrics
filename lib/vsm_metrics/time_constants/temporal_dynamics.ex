@@ -104,7 +104,7 @@ defmodule VsmMetrics.TimeConstants.TemporalDynamics do
   @doc """
   Analyze temporal stability of the VSM
   """
-  def temporal_stability_analysis(vsm_state, time_window) do
+  def temporal_stability_analysis(_vsm_state, time_window) do
     subsystems = [:s1, :s2, :s3, :s4, :s5]
     
     # Calculate eigenvalues of the temporal coupling matrix

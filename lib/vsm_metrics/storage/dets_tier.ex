@@ -63,7 +63,7 @@ defmodule VsmMetrics.Storage.DETSTier do
   @impl true
   def handle_call({:put, key, value, metadata}, _from, state) do
     timestamp = System.system_time(:second)
-    compressed_value = :zlib.compress(term_to_binary(value))
+    compressed_value = :zlib.compress(:erlang.term_to_binary(value))
     
     partition = state.current_partition
     :dets.insert(partition, {key, compressed_value, metadata, timestamp})
@@ -127,7 +127,8 @@ defmodule VsmMetrics.Storage.DETSTier do
   end
 
   defp partition_name(date, data_dir) do
-    String.to_atom("#{data_dir}/vsm_metrics_#{Date.to_iso8601(date)}.dets")
+    Path.join(data_dir, "vsm_metrics_#{Date.to_iso8601(date)}.dets")
+    |> String.to_atom()
   end
 
   defp search_all_partitions(state, key) do
